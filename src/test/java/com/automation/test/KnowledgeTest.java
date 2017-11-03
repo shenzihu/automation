@@ -32,23 +32,22 @@ public class KnowledgeTest {
 		Knowledge mainKnowledge = new Knowledge("主知识点", "主内容");
 		repository.save(mainKnowledge);
 		Set<KnowledgeRelation> relations = new HashSet<KnowledgeRelation>();
-
+		
+		mainKnowledge.addRelations(relations);
 		Knowledge main2 = new Knowledge("主知识点2", "主内容2");
 		repository.save(main2);
-		Set<KnowledgeRelation> relations2 = new HashSet<KnowledgeRelation>();
 		relations.add(new KnowledgeRelation(mainKnowledge, main2));
+		
+		repository.save(mainKnowledge);
 
 		Knowledge main3 = new Knowledge("主知识点3", "主内容3");
 		repository.save(main3);
+		
 		relations.add(new KnowledgeRelation(mainKnowledge, main3));
 		Knowledge main4 = new Knowledge("主知识点4", "主内容4");
 		repository.save(main4);
-		relations.add(new KnowledgeRelation(mainKnowledge, main4));
-		mainKnowledge.addRelations(relations);
 		repository.save(mainKnowledge);
-		relations2.add(new KnowledgeRelation(main2, main3));
-		relations2.add(new KnowledgeRelation(main2, main4));
-		main2.addRelations(relations2);
-		repository.save(main2);
+		
+		
 	}
 }
