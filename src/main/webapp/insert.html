@@ -61,22 +61,34 @@
 		app.controller('myCtrl', function($scope,$http) {
 			$(function() {
 				function search() {
-					var maink = new Object();
-					maink.name = $("#main").val();
-					maink.content = $("#maintext").val();
-					var subk = new Object();
-					subk.name = $("#sub").val();
-					subk.content = $("#subtext").val();
-
 					var relation = new Object();
+					var maink = null;
+					var tmp1 = $("#main").val();
+					if(tmp1 != null && tmp1 != undefined && tmp1 != ""){
+						maink = new Object();
+						maink.name = tmp1; 
+						maink.content = $("#maintext").val();
 					relation.mainKnowlege = maink;
-					relation.subKnowledge = subk;
+					}
+					var tmp2 = $("#sub").val();
+					var subk = null;
+					if(tmp2 != null && tmp2 != undefined && tmp2 != ""){
+						console.log("tmp2 :" + tmp2);
+						subk = new Object();
+						subk.name = $("#sub").val();
+						subk.content = $("#subtext").val();
+						relation.subKnowledge = subk;
+					}
 					$http.post("/add", relation).success(function(data){
-						alert("插入成功！");
-						//location.reload();
+						if(data.result =='success'){
+							alert(data.data);
+						}else{
+							alert(data.reason);
+						}
+						console.log(data);
 					}).error(function(data){
+						console.log(data.reason);
 						alert(data.reason);
-						//location.reload();
 					});
 				}
 				$("#search").submit(search);

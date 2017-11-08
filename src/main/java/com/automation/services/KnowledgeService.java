@@ -7,7 +7,7 @@ import com.automation.repositories.KnowledgeRepository;
 
 @Service
 public class KnowledgeService {
-	
+
 	@Autowired
 	KnowledgeRepository repository;
 }
