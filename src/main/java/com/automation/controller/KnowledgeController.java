@@ -1,10 +1,13 @@
 package com.automation.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.automation.Result;
@@ -57,11 +60,8 @@ public class KnowledgeController {
 		return Result.success("插入成功！");
 	}
 
-	@RequestMapping(value = "/search")
-	public Result search(String name) {
-		if (null == name) {
-			return Result.success(repository.findAll());
-		}
-		return Result.success();
+	@RequestMapping(value = "/graph", method = RequestMethod.GET)
+	public Map<String, Object> graph(String name) {
+		return service.graph(name);
 	}
 }

@@ -20,4 +20,7 @@ public interface KnowledgeRepository extends
 
 	@Query(value = "MATCH (k1),(k2) WHERE k1.name ={name1} AND k2.name = {name2} CREATE (k1)-[:CONNECTED]->(k2)")
 	void addRelations(@Param("name1") String name1, @Param("name2") String name2);
+	
+	@Query(value = "MATCH (k1:Knowledge)-[c:CONNECTED]-(k2:Knowledge)  return k1,c,k2")
+	Collection<Knowledge> findAll();
 }
