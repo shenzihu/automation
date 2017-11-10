@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.automation.entity.Knowledge;
 import com.automation.entity.KnowledgeRelation;
 import com.automation.repositories.KnowledgeRepository;
-import com.google.common.base.Strings;
 
 @Service
 public class KnowledgeService {
@@ -62,27 +61,4 @@ private Map<String, Object> toD3Format(Collection<Knowledge> knowledges) {
 		result.put(key2, value2);
 		return result;
 	}
-	
-	/*private Map<String, Object> toD3Format(Collection<Knowledge> knowledges) {
-		List<Map<String, Object>> nodes = new ArrayList<>();
-		List<Map<String, Object>> rels = new ArrayList<>();
-		Iterator<Knowledge> result = knowledges.iterator();
-		while (result.hasNext()) {
-			Knowledge knowledge = result.next();
-			nodes.add(map("name", knowledge.getName(),"label", "knowledge"));
-			for (KnowledgeRelation relation : knowledge.getRelations()) {
-				rels.add(map("source", relation.getMainKnowlege().getId(), "target", relation.getSubKnowledge().getId()));
-			}
-		}
-		return map("nodes", nodes, "links", rels);
-	}
-
-	private Map<String, Object> map(String key1, Object value1, String key2, Object value2) {
-		Map<String, Object> result = new HashMap<String, Object>(2);
-		result.put(key1, value1);
-		result.put(key2, value2);
-		result.put("relation", "CONNECTED");
-		return result;
-	}*/
-	
 }

@@ -3,26 +3,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet"
-	href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css"> 
-<link rel="stylesheet" href="neo4j.css" /> 
+	href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
+<link rel="stylesheet" href="neo4j.css" />
 <title>有限自动机</title>
 
 </head>
 
 <body>
-	<section id="canvasArea">
-		<div id="graph"></div>
-	</section>
-	<ul class="nav nav-pills">
-		<li class="active"><a href="#">主页</a></li>
-		<li><a href="/insert.html">知识点插入</a></li>
-		<!-- <li><a href="#">iOS</a></li>
-		<li><a href="#">VB.Net</a></li>
-		<li><a href="#">Java</a></li>
-		<li><a href="#">PHP</a></li> -->
-	</ul>
 	<div role="navigation" class="navbar navbar-default navbar-static-top">
-
+		<ul class="nav nav-pills">
+			<li class="active"><a href="#">主页</a></li>
+			<li><a href="/insert.html">知识点插入</a></li>
+		</ul>
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-6 col-md-6">
@@ -30,9 +22,8 @@
 						<li>
 							<form role="search" class="navbar-form" id="search">
 								<div class="form-group">
-									<input type="text" value=""
-										placeholder="Search for Knowledge" class="form-control"
-										name="search">
+									<input type="text" value="" placeholder="Search for Knowledge"
+										class="form-control" name="search">
 								</div>
 								<button class="btn btn-default" type="submit">查询</button>
 							</form>
@@ -42,7 +33,7 @@
 				<div class="col-sm-6 col-md-6 ">
 					<h3>
 						有限自动机 <small>知识点查询</small>
-						</h1>
+					</h3>
 				</div>
 			</div>
 		</div>
@@ -76,26 +67,17 @@
 						<ul id="crew">
 						</ul>
 					</div>
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<section id="canvasArea">
+								<div id="graph"></div>
+							</section>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<style type="text/css">
-.node {
-	stroke: #222;
-	stroke-width: 1.5px;
-}
-
-.node.knowledge {
-	fill: #888;
-}
-
-.link {
-	stroke: #999;
-	stroke-opacity: .6;
-	stroke-width: 1px;
-}
-</style>
 	<script src="jquery-1.11.3.js"></script>
 	<script src="d3.min.js"></script>
 	<script type="text/javascript">
@@ -142,12 +124,12 @@
 				}, "json");
 				return false;
 			}
-			function graph(){
+			function graph() {
 				var i = 1;
 				window.onload = function() {
 					//  默认显示所有的信息
 					var name = $("#search").find("input[name=search]").val();
-					d3.json("/graph?name="+name, function(result) {
+					d3.json("/graph?name=" + name, function(result) {
 						console.log(result);
 						//var result = result.obj;
 						new nodeRelation('body', {
@@ -164,58 +146,62 @@
 							"nodes" : [],
 							"links" : []
 						},
-						width : 900,
-						height : 800,
-						distance : 300
+						width : document.body.clientWidth/2,
+						height : 400,
+						distance : 100
 					};
 					//将要展示的数据与初始化数据按参数合并为 一个对象
 					$.extend(true, initData, showData);
-					initData.data.links
-							.forEach(function(e) {
-								if (typeof e.source != "number"
-										&& typeof e.target != "number") {
-									var sourceNode = initData.data.nodes
-											.filter(function(n) {
-												return n.id === e.source;
-											})[0], targetNode = initData.data.nodes
-											.filter(function(n) {
-												return n.id === e.target;
-											})[0];
-									e.source = sourceNode;
-									e.target = targetNode;
-								}
-							});
+					initData.data.links.forEach(function(e) {
+						if (typeof e.source != "number"
+								&& typeof e.target != "number") {
+							var sourceNode = initData.data.nodes
+									.filter(function(n) {
+										return n.id === e.source;
+									})[0], targetNode = initData.data.nodes
+									.filter(function(n) {
+										return n.id === e.target;
+									})[0];
+							e.source = sourceNode;
+							e.target = targetNode;
+						}
+					});
 					var _this = this;
-					var zoom = d3.behavior.zoom().scaleExtent([ 0.2, 2 ]).on("zoom",
-							function() {
+					var zoom = d3.behavior.zoom().scaleExtent([ 0.2, 2 ]).on(
+							"zoom", function() {
 								_this.zoomed();
 							});
-					this.vis = d3.select("#graph").append("svg:svg").attr("width",
-							initData.width).attr("height", initData.height).call(zoom)
-							.on("dblclick.zoom", null);
-					this.vis = this.vis.append('g').attr('class', 'all').attr("width",
-							initData.width).attr("height", initData.height);
-					this.force = d3.layout.force().nodes(initData.data.nodes).links(
-							initData.data.links)
-					/*设置重力，向size()中心点运动*/
-					.gravity(0.1).distance(initData.distance)
-					/*设置电荷数，值越大，相互吸引力越大*/
-					.charge(function(d) {
-						return (-400 * d.index);
-					}).size([ initData.width, initData.height ]).alpha(1).start();
-					this.vis.append("svg:defs").selectAll("marker").data([ "end" ])
-							.enter().append("svg:marker").attr("id", "arrow").attr(
-									'class', 'arrow').attr("viewBox", "0 -5 10 10")
-							.attr("refX", 40).attr("refY", -4).attr("markerWidth", 9)
-							.attr("markerHeight", 16).attr("markerUnits",
-									"userSpaceOnUse").attr("orient", "auto").append(
-									"svg:path").attr("d", "M0,-5L10,0L0,5").attr(
-									'fill', '#A5ABB6');
+					this.vis = d3.select("#graph").append("svg:svg").attr(
+							"width", initData.width).attr("height",
+							initData.height).call(zoom).on("dblclick.zoom",
+							null);
+					this.vis = this.vis.append('g').attr('class', 'all').attr(
+							"width", initData.width).attr("height",
+							initData.height);
+					this.force = d3.layout.force().nodes(initData.data.nodes)
+							.links(initData.data.links)
+							/*设置重力，向size()中心点运动*/
+							.gravity(0.8).distance(initData.distance)
+							/*设置电荷数，值越大，相互吸引力越大*/
+							.charge(function(d) {
+								return (-400 * d.index);
+							}).size([ initData.width, initData.height ]).alpha(
+									1).start();
+					this.vis.append("svg:defs").selectAll("marker").data(
+							[ "end" ]).enter().append("svg:marker").attr("id",
+							"arrow").attr('class', 'arrow').attr("viewBox",
+							"0 -5 10 10").attr("refX", 40).attr("refY", -4)
+							.attr("markerWidth", 9).attr("markerHeight", 16)
+							.attr("markerUnits", "userSpaceOnUse").attr(
+									"orient", "auto").append("svg:path").attr(
+									"d", "M0,-5L10,0L0,5").attr('fill',
+									'#A5ABB6');
 					this.path = this.vis.selectAll("path.link").data(
-							initData.data.links).enter().append("svg:path").attr(
-							"class", "link").attr("marker-end", function(d) {
-						return "url(#arrow)";
-					});
+							initData.data.links).enter().append("svg:path")
+							.attr("class", "link").attr("marker-end",
+									function(d) {
+										return "url(#arrow)";
+									});
 
 					//节点拖拽函数
 					var dragstart = function(d, i) {
@@ -234,51 +220,57 @@
 						_this.tick();
 						_this.force.resume();
 					};
-					this.nodeDrag = d3.behavior.drag().on("dragstart", dragstart).on(
-							"drag", dragmove).on("dragend", dragend);
-					this.node = this.vis.selectAll("g.node").data(initData.data.nodes)
-							.enter().append("svg:g").attr("class", "node").call(
-									_this.nodeDrag);
-					this.node.append("svg:circle").attr("cx", "0").attr("cx", "0")
-							.attr("r", "30px").attr("fill", "#68BDF6").attr("stroke",
-									"#5CA8DB").on("mousemove", function(d) {
-								d3.select(this).attr("fill", "#f00");
-							}).on("mouseout", function(d) {
+					this.nodeDrag = d3.behavior.drag().on("dragstart",
+							dragstart).on("drag", dragmove).on("dragend",
+							dragend);
+					this.node = this.vis.selectAll("g.node").data(
+							initData.data.nodes).enter().append("svg:g").attr(
+							"class", "node").call(_this.nodeDrag);
+					this.node.append("svg:circle") .attr("cx", "0").attr("cx",
+							"0").attr("r", "25px").attr("fill", "#68BDF6")
+							.attr("stroke", "#5CA8DB").on("mousemove",
+									function(d) {
+										d3.select(this).attr("fill", "#f00");
+									}).on("mouseout", function(d) {
 								d3.select(this).attr("fill", "#68BDF6");
 							});
-					this.node.append("svg:text").attr("class", "nodetext").attr("dy",
-							"4px").attr('text-anchor', 'middle').text(function(d) {
-						return d.name;
-					}).attr('fill', "#000");
+					this.node.append("svg:text").attr("class", "nodetext")
+							.attr("dy", "1px") .attr('text-anchor', 'middle')
+							.text(function(d) {
+								return d.name;
+							}).attr('fill', "#000");
 					this.linetext = this.vis.selectAll('.linetext').data(
-							initData.data.links).enter().append("text").attr("class",
-							"linetext").attr('fill', "#000").append("textPath").attr(
-							'xlink:href', function(d) {
-								var str = "#" + d.source.id + d.target.id;
-								return str;
-							}).attr("startOffset", function(d) {
+							initData.data.links).enter().append("text").attr(
+							"class", "linetext").attr('fill', "#000").append(
+							"textPath").attr('xlink:href', function(d) {
+						var str = "#" + d.source.id + d.target.id;
+						return str;
+					}).attr("startOffset", function(d) {
 						var dx = d.target.x - d.source.x;
-						return /* Math.abs(dx / 2 - d.relation.length); */ 7;
+						return /* Math.abs(dx / 2 - d.relation.length); */7;
 					}).text(function(d) {
 						return d.relation;
 					}).call(this.force.drag);
 					this.zoomed = function() {
-						_this.vis.attr("transform", "translate(" + d3.event.translate
-								+ ") scale(" + i + ")")
+						_this.vis.attr("transform", "translate("
+								+ d3.event.translate + ") scale(" + i + ")")
 					};
 					this.tick = function() {
-						_this.path.attr(
-								"d",
-								function(d) {
-									var dx = d.target.x - d.source.x, dy = d.target.y
-											- d.source.y, dr = Math.sqrt(dx * dx + dy
-											* dy);
-									return "M" + d.source.x + "," + d.source.y + "A"
-											+ dr + "," + dr + " 0 0,1 " + d.target.x
-											+ "," + d.target.y;
-								}).attr("id", function(d) {
-							return "" + d.source.id + d.target.id;
-						});
+						_this.path
+								.attr(
+										"d",
+										function(d) {
+											var dx = d.target.x - d.source.x, dy = d.target.y
+													- d.source.y, dr = Math
+													.sqrt(dx * dx + dy * dy);
+											return "M" + d.source.x + ","
+													+ d.source.y + "A" + dr
+													+ "," + dr + " 0 0,1 "
+													+ d.target.x + ","
+													+ d.target.y;
+										}).attr("id", function(d) {
+									return "" + d.source.id + d.target.id;
+								});
 						_this.linetext.attr("startOffset", function(d) {
 							var dx = d.target.x - d.source.x;
 							return Math.abs(dx / 2);

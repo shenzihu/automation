@@ -15,7 +15,6 @@ public interface KnowledgeRepository extends
 
 	Knowledge findByName(@Param("name") String name);
 	
-	//@Query(value = "MATCH (k1:Knowledge)-[c:CONNECTED]-(k2:Knowledge) WHERE k1.name =~ *{name}* return k1,c,k2")
 	Collection<Knowledge> findByNameLike(@Param("name") String name);
 
 	@Query(value = "MATCH (k1),(k2) WHERE k1.name ={name1} AND k2.name = {name2} CREATE (k1)-[:CONNECTED]->(k2)")
