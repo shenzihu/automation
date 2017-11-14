@@ -20,7 +20,7 @@ main,#canvasArea{
 }
 
 .link {
-	stroke: #999;
+	/* stroke: #999; */
 	stroke-opacity: .6;
 	stroke-width: 1px;
 }

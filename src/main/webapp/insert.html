@@ -2,14 +2,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet"
-	href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
+<link rel="stylesheet"	href="main.css">
 <script
 	src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
 <title>知识点插入</title>
 </head>
 
-<body ng-app="myApp" ng-controller="myCtrl">
+<body ng-app="myApp" ng-controller="myCtrl" style = "background-image: url(neo4j_background3.gif)">
 	<ul class="nav nav-pills">
 		<li class="active"><a href="index.html">主页</a></li>
 		<li><a href="#">知识点插入</a></li>
@@ -84,7 +83,7 @@
 						subk.content = $("#subtext").val();
 						relation.subKnowledge = subk;
 					}
-					$http.post("/add", relation).success(function(data) {
+					$http.post("add", relation).success(function(data) {
 						if (data.result == 'success') {
 							alert(data.data);
 						} else {

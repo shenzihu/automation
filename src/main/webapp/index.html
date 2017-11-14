@@ -2,14 +2,13 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet"
-	href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
+<link rel="stylesheet"	href="main.css">
 <link rel="stylesheet" href="neo4j.css" />
 <title>有限自动机</title>
 
 </head>
 
-<body>
+<body  style = "background-image: url(neo4j_background3.gif)">
 	<div role="navigation" class="navbar navbar-default navbar-static-top">
 		<ul class="nav nav-pills">
 			<li class="active"><a href="#">主页</a></li>
@@ -83,7 +82,7 @@
 	<script type="text/javascript">
 		$(function() {
 			function showKnowledge(title) {
-				$.get("/knowledge/search/findByName?name="
+				$.get("knowledge/search/findByName?name="
 						+ encodeURIComponent(title), // todo fix paramter in SDN
 				function(data) {
 					if (!data)
@@ -99,9 +98,9 @@
 				var query = $("#search").find("input[name=search]").val();
 				var url;
 				if (query == "" || query == undefined || query == null) {
-					url = "/knowledge/search/findAll";
+					url = "knowledge/search/findAll";
 				} else {
-					url = "/knowledge/search/findByNameLike?name=*"
+					url = "knowledge/search/findByNameLike?name=*"
 							+ encodeURIComponent(query) + "*";
 				}
 				$.get(url, function(data) {
@@ -129,7 +128,7 @@
 				window.onload = function() {
 					//  默认显示所有的信息
 					var name = $("#search").find("input[name=search]").val();
-					d3.json("/graph?name=" + name, function(result) {
+					d3.json("graph", function(result) {
 						console.log(result);
 						//var result = result.obj;
 						new nodeRelation('body', {
