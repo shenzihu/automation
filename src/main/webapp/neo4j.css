@@ -6,11 +6,11 @@ main,#canvasArea{
     overflow: hidden; 
     padding: 0; 
 }
-/* .link{
+.link{
 	fill:none;
     stroke: #ccc;
     stroke-width: 1px;
-} */
+} 
 .node {
 	stroke-width: 1.5px;
 }
@@ -19,8 +19,6 @@ main,#canvasArea{
 	fill: #888;
 }
 
-.link {
-	/* stroke: #999; */
-	stroke-opacity: .6;
-	stroke-width: 1px;
+.nodetext{
+	font-size:70%
 }
