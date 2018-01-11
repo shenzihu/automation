@@ -2,104 +2,116 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet"	href="main.css">
+<link rel="stylesheet" href="main.css">
 <script
 	src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
 <title>知识点插入</title>
 </head>
 
-<body ng-app="myApp" ng-controller="myCtrl" style = "background-image: url(neo4j_background3.gif)">
-	<ul class="nav nav-pills">
-		<li><a href="index.html">主页</a></li>
-		<li  class="active"><a href="#">知识点插入</a></li>
-		<li ><a href="search.html">知识点查询</a></li>
-		
-	</ul>
-	<div class="container">
+<body ng-app="myApp" ng-controller="myCtrl"
+	style="background-image: url(neo4j_background3.gif)">
+	<div role="navigation" class="navbar navbar-default navbar-static-top">
+		<ul class="nav nav-pills">
+			<li><a href="index.html">主页</a></li>
+			<li class="active"><a href="#">知识点插入</a></li>
+			<li><a href="search.html">知识点查询</a></li>
 
-		<div class="row clearfix">
-			<div class="col-md-12 column">
-				<div class="page-header">
-					<h1>
-						有限自动机 <small>知识点插入</small>
-					</h1>
+		</ul>
+		<div class="container">
+
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<div class="page-header">
+						<h1>
+							形式语言与自动机理论 <small>知识点插入</small>
+						</h1>
+					</div>
+					<form class="form-horizontal" role="search" id="search">
+						<div class="form-group">
+							<label for="main" class="col-sm-2 control-label">主知识点</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control col-sm-2" id="main"
+									placeholder="主要知识点" />
+							</div>
+						</div>
+						<div class="form-group ">
+							<label for="maintext" class="col-sm-2 control-label">主知识点的定义</label>
+							<div class="col-sm-5">
+								<textarea class="form-control col-sm-3" rows="3" id="maintext"
+									placeholder="主要知识点的定义和相关的知识"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="sub" class="col-sm-2 control-label">关联知识点</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control col-sm-2" id="sub"
+									placeholder="关联知识点" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="subtext" class="col-sm-2 control-label">关联知识点的定义</label>
+							<div class="col-sm-5">
+								<textarea class="form-control col-sm-3" rows="3" id="subtext"
+									placeholder="关联知识点的定义"></textarea>
+							</div>
+						</div>
+						<p class="text-warning col-sm-offset-2">
+							<b>注意！这里假如只有单个知识点，没有与其关联的知识，则只写填写主知识点中相关的内容。 填写的时候尽量详细</b>
+						</p>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">提交</button>
+							</div>
+						</div>
+					</form>
+
 				</div>
-				<form class="form-horizontal" role="search" id="search">
-					<div class="form-group">
-						<label for="main" class="col-sm-2 control-label">主知识点</label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control col-sm-2" id="main" placeholder="主要知识点"/>
-						</div>
-					</div>
-					<div class="form-group ">
-						<label for="maintext" class="col-sm-2 control-label">主知识点的定义</label>
-						<div class="col-sm-5">
-							<textarea class="form-control col-sm-3" rows="3" id="maintext" placeholder="主要知识点的定义和相关的知识"></textarea>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="sub" class="col-sm-2 control-label">关联知识点</label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control col-sm-2" id="sub" placeholder="关联知识点"/>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="subtext" class="col-sm-2 control-label">关联知识点的定义</label>
-						<div class="col-sm-5">
-							<textarea class="form-control col-sm-3" rows="3" id="subtext" placeholder="关联知识点的定义"></textarea>
-						</div>
-					</div>
-					<p class="text-warning col-sm-offset-2"><b>注意！这里假如只有单个知识点，没有与其关联的知识，则只写填写主知识点中相关的内容。
-								填写的时候尽量详细</b></p>
-					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">提交</button>
-						</div>
-					</div>
-				</form>
-
 			</div>
+			<script src="jquery-1.11.3.js"></script>
+			<script type="text/javascript">
+				var app = angular.module('myApp', []);
+				app.controller('myCtrl',
+						function($scope, $http) {
+							$(function() {
+								function search() {
+									var relation = new Object();
+									var maink = null;
+									var tmp1 = $("#main").val();
+									if (tmp1 != null && tmp1 != undefined
+											&& tmp1 != "") {
+										maink = new Object();
+										maink.name = tmp1;
+										maink.content = $("#maintext").val();
+										relation.mainKnowlege = maink;
+									}
+									var tmp2 = $("#sub").val();
+									var subk = null;
+									if (tmp2 != null && tmp2 != undefined
+											&& tmp2 != "") {
+										console.log("tmp2 :" + tmp2);
+										subk = new Object();
+										subk.name = $("#sub").val();
+										subk.content = $("#subtext").val();
+										relation.subKnowledge = subk;
+									}
+									$http.post("add", relation).success(
+											function(data) {
+												if (data.result == 'success') {
+													alert(data.data);
+												} else {
+													alert(data.reason);
+												}
+												console.log(data);
+											}).error(function(data) {
+										console.log(data.reason);
+										alert(data.reason);
+									});
+								}
+								$("#search").submit(search);
+							})
+						});
+			</script>
 		</div>
 	</div>
-	<script src="jquery-1.11.3.js"></script>
-	<script type="text/javascript">
-		var app = angular.module('myApp', []);
-		app.controller('myCtrl', function($scope, $http) {
-			$(function() {
-				function search() {
-					var relation = new Object();
-					var maink = null;
-					var tmp1 = $("#main").val();
-					if (tmp1 != null && tmp1 != undefined && tmp1 != "") {
-						maink = new Object();
-						maink.name = tmp1;
-						maink.content = $("#maintext").val();
-						relation.mainKnowlege = maink;
-					}
-					var tmp2 = $("#sub").val();
-					var subk = null;
-					if (tmp2 != null && tmp2 != undefined && tmp2 != "") {
-						console.log("tmp2 :" + tmp2);
-						subk = new Object();
-						subk.name = $("#sub").val();
-						subk.content = $("#subtext").val();
-						relation.subKnowledge = subk;
-					}
-					$http.post("add", relation).success(function(data) {
-						if (data.result == 'success') {
-							alert(data.data);
-						} else {
-							alert(data.reason);
-						}
-						console.log(data);
-					}).error(function(data) {
-						console.log(data.reason);
-						alert(data.reason);
-					});
-				}
-				$("#search").submit(search);
-			})
-		});
-	</script>
 </body>
 </html>

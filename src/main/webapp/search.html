@@ -5,7 +5,18 @@
 <link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="neo4j.css" />
 <title>知识点查询</title>
-
+<style type="text/css">
+.center-vertical {
+	margin-top: 0;
+    margin-bottom: 10px;
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+</style>
 </head>
 
 <body style="background-image: url(neo4j_background3.gif)">
@@ -32,7 +43,7 @@
 				</div>
 				<div class="col-sm-6 col-md-6 ">
 					<h3>
-						有限自动机 <small>知识点查询</small>
+						形式语言与自动机理论 <small>知识点查询</small>
 					</h3>
 				</div>
 			</div>
@@ -47,7 +58,7 @@
 					<thead>
 						<tr>
 							<th>知识点</th>
-							<th>指点内容</th>
+							<th>知识点内容</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -57,13 +68,13 @@
 		</div>
 		<div class="col-md-7">
 			<div class="panel panel-default">
-				<div class="panel-heading" id="name">Details</div>
+				<div class="panel-heading" id="name"></div>
 				<div class="row">
 					<div class="col-sm-4 col-md-4">
-						<img src="" class="well" id="poster" />
+						<span class="center-vertical">知识点内容</span>
 					</div>
 					<div class="col-md-8 col-sm-8">
-						<h4>Crew</h4>
+						<h4></h4>
 						<ul id="crew">
 						</ul>
 					</div>
@@ -127,14 +138,14 @@
 			function graph() {
 				$('svg').hide();
 				var i = 1;
-					//  默认显示所有的信息
-					var name = $("#search").find("input[name=search]").val();
-					d3.json("graph?name="+name, function(result) {
-						//var result = result.obj;
-						new nodeRelation('body', {
-							data : result
-						});
+				//  默认显示所有的信息
+				var name = $("#search").find("input[name=search]").val();
+				d3.json("graph?name=" + name, function(result) {
+					//var result = result.obj;
+					new nodeRelation('body', {
+						data : result
 					});
+				});
 				//绘制图形
 				function nodeRelation(wrapper, showData) {
 					//数据初始化
@@ -143,7 +154,7 @@
 							"nodes" : [],
 							"links" : []
 						},
-						width : document.body.clientWidth/2,
+						width : document.body.clientWidth / 2,
 						height : 400,
 						distance : 100
 					};
@@ -196,9 +207,9 @@
 					this.path = this.vis.selectAll("path.link").data(
 							initData.data.links).enter().append("svg:path")
 							.attr("class", "link")/* .attr("marker-end",
-									function(d) {
-										return "url(#arrow)";
-									}) */;
+														function(d) {
+															return "url(#arrow)";
+														}) */;
 
 					//节点拖拽函数
 					var dragstart = function(d, i) {
@@ -223,8 +234,8 @@
 					this.node = this.vis.selectAll("g.node").data(
 							initData.data.nodes).enter().append("svg:g").attr(
 							"class", "node").call(_this.nodeDrag);
-					this.node.append("svg:circle") .attr("cx", "0").attr("cx",
-							"0").attr("r", "15px").attr("fill", "#68BDF6")
+					this.node.append("svg:circle").attr("cx", "0").attr("cx",
+							"0").attr("r", "20px").attr("fill", "#68BDF6")
 							.attr("stroke", "#5CA8DB").on("mousemove",
 									function(d) {
 										d3.select(this).attr("fill", "#f00");
@@ -232,7 +243,7 @@
 								d3.select(this).attr("fill", "#68BDF6");
 							});
 					this.node.append("svg:text").attr("class", "nodetext")
-							.attr("dy", "1px") .attr('text-anchor', 'middle')
+							.attr("dy", "1px").attr('text-anchor', 'middle')
 							.text(function(d) {
 								return d.name;
 							}).attr('fill', "#000");
@@ -282,7 +293,7 @@
 			$("#search").submit(search);
 			search();
 			/* $("#search").submit(graph); */
-		
+
 		})
 	</script>
 </body>
